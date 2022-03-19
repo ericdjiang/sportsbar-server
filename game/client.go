@@ -37,11 +37,9 @@ func PushGameUpdates(h *stream.Hub) {
 		if err != nil {
 
 		}
-		gamesJSON, err := json.Marshal(games)
-		if err != nil {
-
+		for _, game := range games {
+			h.Broadcast <- stream.SocketMessage{Type: stream.GameUpdates, Data: &game}
 		}
-		h.Broadcast <- gamesJSON
 		<-time.After(5 * time.Second)
 	}
 }

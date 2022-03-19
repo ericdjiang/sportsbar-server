@@ -6,6 +6,7 @@ package stream
 
 import (
 	"bytes"
+	"encoding/json"
 	"log"
 	"net/http"
 	"time"
@@ -62,15 +63,27 @@ func (c *Client) readPump() {
 	c.conn.SetReadDeadline(time.Now().Add(pongWait))
 	c.conn.SetPongHandler(func(string) error { c.conn.SetReadDeadline(time.Now().Add(pongWait)); return nil })
 	for {
-		_, message, err := c.conn.ReadMessage()
+		_, chatBytes, err := c.conn.ReadMessage()
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
 				log.Printf("error: %v", err)
 			}
 			break
 		}
-		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
-		c.hub.Broadcast <- message
+		chatBytes = bytes.TrimSpace(bytes.Replace(chatBytes, newline, space, -1))
+		//var message SocketMessage
+		//json.Unmarshal(messageBytes, &message)
+
+		var chat Chat
+		err = json.Unmarshal(chatBytes, &chat)
+		if err != nil {
+			break
+		}
+
+		c.hub.Broadcast <- SocketMessage{
+			Type: NewChat,
+			Data: &chat,
+		}
 	}
 }
 
