@@ -81,8 +81,8 @@ func (c *Client) readPump() {
 		}
 
 		c.hub.Broadcast <- SocketMessage{
-			Type: NewChat,
-			Data: &chat,
+			MessageType: NewChat,
+			Data:        &chat,
 		}
 	}
 }

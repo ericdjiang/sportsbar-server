@@ -15,6 +15,6 @@ const (
 )
 
 type SocketMessage struct {
-	Type MessageDataType
-	Data any
+	MessageType MessageDataType
+	Data        any
 }

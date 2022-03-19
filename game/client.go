@@ -37,9 +37,7 @@ func PushGameUpdates(h *stream.Hub) {
 		if err != nil {
 
 		}
-		for _, game := range games {
-			h.Broadcast <- stream.SocketMessage{Type: stream.GameUpdates, Data: &game}
-		}
+		h.Broadcast <- stream.SocketMessage{MessageType: stream.GameUpdates, Data: &games}
 		<-time.After(5 * time.Second)
 	}
 }
