@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"sb-server/stream"
+	"strings"
 	"time"
 )
 
@@ -12,18 +13,18 @@ const BASE_URL = "https://api.sportsdata.io/v3/nba/scores/json/"
 const GAMES_BY_DATE_URL = BASE_URL + "GamesByDate"
 const API_KEY = "b3ba3ff994b54af28a8e850b5ee7a419"
 
-func GetGamesByDate() ([]Game, error) {
+func GetGamesByDate(date time.Time) ([]Game, error) {
 	resp, err := http.Get(GAMES_BY_DATE_URL +
-		"/2022-MAR-14" +
+		strings.ToUpper(date.Format("/2006-Jan-02")) +
 		"?key=" + API_KEY)
 	if err != nil {
-
+		return nil, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	//sb := string(body)
 	if err != nil {
-
+		return nil, err
 	}
 
 	var games []Game
@@ -33,11 +34,12 @@ func GetGamesByDate() ([]Game, error) {
 
 func PushGameUpdates(h *stream.Hub) {
 	for {
-		games, err := GetGamesByDate()
+		games, err := GetGamesByDate(time.Now())
+		<-time.After(5 * time.Hour)
 		if err != nil {
-
+			print(err)
 		}
 		h.Broadcast <- stream.SocketMessage{MessageType: stream.GameUpdates, Data: &games}
-		<-time.After(5 * time.Second)
+		<-time.After(5 * time.Hour)
 	}
 }

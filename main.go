@@ -5,23 +5,43 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
-	"fmt"
 	"log"
 	"net/http"
 	"sb-server/game"
 	"sb-server/stream"
+	"strconv"
+	"time"
 )
 
 var addr = flag.String("addr", ":8080", "http service address")
 
-func serveSports(w http.ResponseWriter, r *http.Request) {
-	games, err := game.GetGamesByDate()
-	if err != nil {
-
+func serveGamesPrevNDays(w http.ResponseWriter, r *http.Request) {
+	keys, ok := r.URL.Query()["days"]
+	if !ok || len(keys[0]) < 1 {
+		log.Println("Url Param 'key' is missing")
+		http.Error(w, "The required query parameter 'days' is missing.", http.StatusBadRequest)
+		return
 	}
-	fmt.Println(games)
-	fmt.Fprintf(w, "done")
+	nDays, err := strconv.Atoi(keys[0])
+	if err != nil {
+		http.Error(w, "Please ensure 'days' is an integer parameter.", http.StatusBadRequest)
+		return
+	}
+
+	date := time.Now()
+	var games []game.Game
+	for i := 1; i <= nDays; i++ {
+		gamesByDate, err := game.GetGamesByDate(date)
+		if err != nil {
+			http.Error(w, "Error contacting SportsData API.", http.StatusBadRequest)
+			return
+		}
+		games = append(games, gamesByDate...)
+		date = date.AddDate(0, 0, -i)
+	}
+	json.NewEncoder(w).Encode(games)
 }
 
 func main() {
@@ -32,7 +52,7 @@ func main() {
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		stream.ServeWs(hub, w, r)
 	})
-	http.HandleFunc("/sports", serveSports)
+	http.HandleFunc("/games", serveGamesPrevNDays)
 	err := http.ListenAndServe(*addr, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
