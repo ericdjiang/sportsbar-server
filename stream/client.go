@@ -71,18 +71,23 @@ func (c *Client) readPump() {
 			break
 		}
 		chatBytes = bytes.TrimSpace(bytes.Replace(chatBytes, newline, space, -1))
-		//var message SocketMessage
-		//json.Unmarshal(messageBytes, &message)
+		var message NewChatSocketMessage
+		json.Unmarshal(chatBytes, &message)
 
-		var chat Chat
-		err = json.Unmarshal(chatBytes, &chat)
-		if err != nil {
-			break
-		}
-
+		//var newChat Chat
+		//json.Unmarshal()
+		//
+		//var chat Chat
+		//err = json.Unmarshal(message.c, &chat)
+		//if err != nil {
+		//	break
+		//}
+		//
+		//fmt.Println(chat)
+		//
 		c.hub.Broadcast <- SocketMessage{
 			MessageType: NewChat,
-			Data:        &chat,
+			Data:        &message.Data,
 		}
 	}
 }

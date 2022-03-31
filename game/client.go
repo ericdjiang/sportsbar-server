@@ -40,6 +40,6 @@ func PushGameUpdates(h *stream.Hub) {
 			print(err)
 		}
 		h.Broadcast <- stream.SocketMessage{MessageType: stream.GameUpdates, Data: &games}
-		<-time.After(5 * time.Hour)
+		<-time.After(5 * time.Second)
 	}
 }
