@@ -38,6 +38,10 @@ type Game struct {
 	Quarter              string
 	TimeRemainingMinutes int
 	TimeRemainingSeconds int
+	PointSpread          float32
+	OverUnder            float32
+	AwayTeamMoneyLine    int
+	HomeTeamMoneyLine    int
 }
 
 type Games []Game
