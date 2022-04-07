@@ -1,6 +1,4 @@
-// Copyright 2013 The Gorilla WebSocket Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file.
+// Some starter code provided by Gorilla WebSocket.
 
 package main
 
@@ -58,7 +56,8 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		log.Fatal("PORT must be set")
+		port = "8080"
+		log.Fatal("Setting port to 8080")
 	}
 	err := http.ListenAndServe(":"+port, nil)
 
