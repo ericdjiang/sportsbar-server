@@ -9,6 +9,7 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"os"
 	"sb-server/game"
 	"sb-server/stream"
 	"strconv"
@@ -53,7 +54,14 @@ func main() {
 		stream.ServeWs(hub, w, r)
 	})
 	http.HandleFunc("/games", serveGamesPrevNDays)
-	err := http.ListenAndServe(*addr, nil)
+	// err := http.ListenAndServe(*addr, nil)
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		log.WithField("PORT", port).Fatal("$PORT must be set")
+	}
+	err := http.ListenAndServe(":"+port, nil)
+
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
