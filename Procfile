@@ -1,1 +1,1 @@
-web: bin/sportsbar-server
+web: bin/sb-server
