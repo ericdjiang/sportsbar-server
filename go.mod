@@ -1,4 +1,4 @@
-module sportsbar-server
+module sb-server
 
 go 1.18
 
