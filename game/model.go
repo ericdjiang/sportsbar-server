@@ -18,6 +18,7 @@ func (self *SportsDataDateTime) UnmarshalJSON(b []byte) (err error) {
 		fmt.Println(err)
 		return err
 	}
+	t = t.AddDate(0, 0, 1)
 	self.Time = t
 	return
 }

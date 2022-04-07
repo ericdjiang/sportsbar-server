@@ -35,11 +35,10 @@ func GetGamesByDate(date time.Time) ([]Game, error) {
 func PushGameUpdates(h *stream.Hub) {
 	for {
 		games, err := GetGamesByDate(time.Now())
-		<-time.After(5 * time.Hour)
+		<-time.After(10 * time.Hour)
 		if err != nil {
 			print(err)
 		}
 		h.Broadcast <- stream.SocketMessage{MessageType: stream.GameUpdates, Data: &games}
-		<-time.After(5 * time.Second)
 	}
 }

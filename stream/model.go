@@ -9,6 +9,8 @@ type Chat struct {
 
 type MessageDataType int64
 
+type Unknown interface{}
+
 const (
 	NewChat MessageDataType = iota
 	GameUpdate
@@ -17,7 +19,7 @@ const (
 
 type SocketMessage struct {
 	MessageType MessageDataType
-	Data        any
+	Data        Unknown
 }
 
 type NewChatSocketMessage struct {
