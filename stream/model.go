@@ -1,3 +1,5 @@
+// Model definitions for WebSocket connections
+
 package stream
 
 type Chat struct {

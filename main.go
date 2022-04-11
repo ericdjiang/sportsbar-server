@@ -1,4 +1,4 @@
-// Some starter code provided by Gorilla WebSocket.
+// HTTP Server entry point which serves a websocket connection URL and RESTful GET endpoint.
 
 package main
 
@@ -57,7 +57,7 @@ func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
-		log.Fatal("Setting port to 8080")
+		log.Println("Setting port to 8080")
 	}
 	err := http.ListenAndServe(":"+port, nil)
 

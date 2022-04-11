@@ -1,3 +1,5 @@
+// Handle sportsdata.io API polling requests and push updates to WebSocket event hub.
+
 package game
 
 import (
@@ -5,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"sb-server/stream"
+	"sort"
 	"strings"
 	"time"
 )
@@ -29,6 +32,9 @@ func GetGamesByDate(date time.Time) ([]Game, error) {
 
 	var games []Game
 	json.Unmarshal(body, &games)
+
+	sort.Slice(games, func(i, j int) bool { return games[i].DateTime.Time.Before(games[j].DateTime.Time) })
+
 	return games, nil
 }
 

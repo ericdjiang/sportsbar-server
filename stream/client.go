@@ -1,4 +1,5 @@
-// Some starter code provided by Gorilla WebSocket.
+// Read and write from client WebSocket streams.
+// Skeleton code provided by the open-source Gorilla WebSocket library.
 
 package stream
 
@@ -72,17 +73,6 @@ func (c *Client) readPump() {
 		var message NewChatSocketMessage
 		json.Unmarshal(chatBytes, &message)
 
-		//var newChat Chat
-		//json.Unmarshal()
-		//
-		//var chat Chat
-		//err = json.Unmarshal(message.c, &chat)
-		//if err != nil {
-		//	break
-		//}
-		//
-		//fmt.Println(chat)
-		//
 		c.hub.Broadcast <- SocketMessage{
 			MessageType: NewChat,
 			Data:        &message.Data,

@@ -1,4 +1,5 @@
-// Some starter code provided by Gorilla WebSocket.
+// Maintains all client connections and broadcasts new events to all client channels.
+// Some skeleton code provided by the open-source Gorilla WebSocket library.
 
 package stream
 

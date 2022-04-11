@@ -1,3 +1,5 @@
+// Model definitions for basketball games.
+
 package game
 
 import (
