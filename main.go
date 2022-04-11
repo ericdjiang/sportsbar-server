@@ -52,7 +52,6 @@ func main() {
 		stream.ServeWs(hub, w, r)
 	})
 	http.HandleFunc("/games", serveGamesPrevNDays)
-	// err := http.ListenAndServe(*addr, nil)
 
 	port := os.Getenv("PORT")
 	if port == "" {

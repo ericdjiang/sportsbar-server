@@ -14,7 +14,7 @@ import (
 
 const BASE_URL = "https://api.sportsdata.io/v3/nba/scores/json/"
 const GAMES_BY_DATE_URL = BASE_URL + "GamesByDate"
-const API_KEY = "b3ba3ff994b54af28a8e850b5ee7a419"
+const API_KEY = "b82d1bdf161e4b66b029750e7b4bb289"
 
 func GetGamesByDate(date time.Time) ([]Game, error) {
 	resp, err := http.Get(GAMES_BY_DATE_URL +
@@ -25,7 +25,6 @@ func GetGamesByDate(date time.Time) ([]Game, error) {
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
-	//sb := string(body)
 	if err != nil {
 		return nil, err
 	}
